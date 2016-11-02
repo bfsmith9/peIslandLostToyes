@@ -1,0 +1,26 @@
+//
+//  ssidRetrieve.m
+//  PacketizedEnergyIPhoneApp
+//
+//  Created by Barry Smith on 11/1/16.
+//  Copyright © 2016 Packetized Energy. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <SystemConfiguration/CaptiveNetwork.h>
+
++ (NSString *)GetCurrentWifiHotSpotName {
+    
+    NSString *wifiName = nil;
+    NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
+    for (NSString *ifnam in ifs) {
+        NSDictionary *info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+        
+        NSLog(@"info:%@",info);
+        
+        if (info[@"SSID"]) {
+            wifiName = info[@"SSID"];
+        }
+    }
+    return wifiName;
+}
